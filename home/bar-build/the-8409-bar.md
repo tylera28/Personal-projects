@@ -3,6 +3,9 @@
 Build book: freestanding lounge bar for the basement game room (blank wall at the foot of the stairs, facing the pool table) + upstairs wet bar alcove refresh.
 Status: concept, pending measurements. Date: 2026-11-08.
 Drawings (plan, front elevation, section, back bar, alcove before/after) are in `the-8409-bar.pdf` and the HTML page in this folder.
+3D: `basement-walkthrough.html` is a walkable first-person model of the basement with the bar in place (W A S D + mouse, or drag on a phone). Its Dimensions panel takes real measurements and rebuilds. Still renders from it are in `renders/`.
+
+The approach follows the levelsio post (7 Nov 2026): design furniture part by part, get a bill of materials, buy raw stock, assemble it yourself, skip the brand markup. Claimed saving vs premium brands ~85%. Realistic saving here vs a mid-market slat bar: 40 to 60%, mostly labor and markup on the top and rail.
 
 ---
 
