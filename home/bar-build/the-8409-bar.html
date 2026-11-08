@@ -1,0 +1,498 @@
+<title>The 8409 Bar</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a build book. One reading column (68ch) for prose, drawings break out to a wider measure, specs in mono tables. */
+:root{
+  --paper:#F6F2EA;      /* the warm white of the walls */
+  --ink:#1C1B19;        /* media console black */
+  --muted:#6E655C;
+  --line:#D9D1C4;
+  --panel:#ECE5D8;
+  --cognac:#A8663A;     /* the sectional */
+  --brass:#B08D57;      /* console pulls */
+  --brick:#8E3F2F;      /* fireplace */
+  --acacia:#9C6B3E;
+  --slat:#2A2724;
+  --glow:#F2C98A;
+  --display:"Big Shoulders Display","Archivo Narrow","Arial Narrow",Impact,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono","SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1A1816; --ink:#EDE6DA; --muted:#A69C8F; --line:#3A3530; --panel:#242120;
+    --cognac:#C98350; --brass:#CDAA6E; --brick:#B2553F; --acacia:#B57E4C; --slat:#0F0E0D; --glow:#E0B06A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1A1816; --ink:#EDE6DA; --muted:#A69C8F; --line:#3A3530; --panel:#242120;
+  --cognac:#C98350; --brass:#CDAA6E; --brick:#B2553F; --acacia:#B57E4C; --slat:#0F0E0D; --glow:#E0B06A;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--body); font-size:17px; line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:0 64px;
+}
+.wrap{max-width:980px; margin:0 auto}
+.prose{max-width:68ch}
+h1,h2,h3{font-family:var(--display); text-wrap:balance; line-height:1; margin:0}
+h1{font-size:clamp(56px,11vw,120px); font-weight:800; letter-spacing:-.01em}
+h2{font-size:clamp(30px,4.5vw,44px); font-weight:800; margin-top:72px; padding-top:20px; border-top:3px solid var(--ink)}
+h3{font-size:22px; font-weight:600; margin-top:28px; letter-spacing:.01em; text-transform:uppercase}
+p{margin:14px 0}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+header{padding-top:40px; display:grid; gap:18px}
+.sub{font-size:21px; max-width:60ch; margin:0}
+.meta{display:flex; flex-wrap:wrap; gap:10px 28px; font-family:var(--mono); font-size:13px; color:var(--muted)}
+.meta b{color:var(--ink); font-weight:500}
+.palette{display:grid; grid-template-columns:repeat(auto-fit,minmax(118px,1fr)); gap:12px; margin-top:22px}
+.sw{display:grid; gap:6px; font-family:var(--mono); font-size:12px; color:var(--muted)}
+.sw i{display:block; height:56px; border:1px solid var(--line)}
+.sw b{color:var(--ink); font-weight:500}
+figure{margin:28px 0 0; background:var(--panel); border:1px solid var(--line); padding:18px 18px 10px}
+figure svg{display:block; width:100%; height:auto; max-width:100%}
+figcaption{font-family:var(--mono); font-size:12.5px; color:var(--muted); margin-top:10px; line-height:1.5}
+figcaption b{color:var(--ink); font-weight:500}
+.dim{font-family:var(--mono); font-size:7px; fill:var(--ink)}
+.dim.m{fill:var(--muted)}
+.lbl{font-family:var(--mono); font-size:6.5px; fill:var(--muted)}
+.ln{stroke:var(--ink); stroke-width:.6; fill:none}
+.dl{stroke:var(--muted); stroke-width:.5; fill:none}
+.gh{stroke:var(--muted); stroke-width:.6; fill:none; stroke-dasharray:2 1.5}
+table{border-collapse:collapse; width:100%; font-family:var(--mono); font-size:13px; font-variant-numeric:tabular-nums}
+.tbl{overflow-x:auto; margin-top:16px; border-top:2px solid var(--ink)}
+th{text-align:left; font-weight:500; color:var(--muted); padding:10px 10px 8px; border-bottom:1px solid var(--line); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase}
+td{padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+td.n,th.n{text-align:right; white-space:nowrap}
+tr.total td{font-weight:500; border-bottom:2px solid var(--ink); background:var(--panel)}
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; margin-top:16px}
+.grid2 > *{min-width:0}
+.card{border:1px solid var(--line); padding:16px 18px; background:var(--panel)}
+.card h4{font-family:var(--display); font-size:19px; font-weight:600; text-transform:uppercase; letter-spacing:.02em; margin:0 0 8px}
+.card p{margin:8px 0; font-size:15.5px}
+ul,ol{padding-left:22px; margin:10px 0}
+li{margin:6px 0}
+li::marker{color:var(--brass)}
+.callout{border-left:4px solid var(--cognac); padding:6px 0 6px 18px; margin:24px 0; font-size:17px}
+.callout .eyebrow{display:block; margin-bottom:4px}
+.conf{display:inline-block; font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; border:1px solid var(--line); padding:2px 7px; color:var(--muted); vertical-align:middle; margin-left:6px}
+.steps{counter-reset:s; list-style:none; padding:0; margin-top:10px}
+.steps li{display:grid; grid-template-columns:56px 1fr; gap:14px; padding:14px 0; border-bottom:1px solid var(--line); margin:0}
+.steps li::before{counter-increment:s; content:counter(s,decimal-leading-zero); font-family:var(--display); font-size:34px; font-weight:800; line-height:1; color:var(--brass)}
+.steps li > div{min-width:0}
+.steps b{font-family:var(--display); font-size:18px; font-weight:600; text-transform:uppercase; letter-spacing:.02em; display:block}
+.ask{background:var(--ink); color:var(--paper); padding:26px 24px; margin-top:40px}
+.ask h2{border-top:0; margin-top:0; padding-top:0; color:var(--paper)}
+.ask li::marker{color:var(--glow)}
+.ask .eyebrow{color:var(--glow)}
+code{font-family:var(--mono); font-size:.92em}
+@media (max-width:520px){ .steps li{grid-template-columns:44px 1fr} .steps li::before{font-size:28px} figure{padding:10px 10px 8px} body{font-size:16px} }
+@media (prefers-reduced-motion: reduce){ *{animation:none!important; transition:none!important} }
+</style>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">Build book · freestanding lounge bar + wet bar alcove refresh</span>
+  <h1>The 8409 Bar</h1>
+  <p class="sub">A six-foot slat-front bar in black and acacia for the front music room, with the existing wet bar alcove converted into a matching service station. Designed from your photos and walkthrough videos to sit inside the house you already have: black steel, warm wood, cognac leather, brick, brass in small doses.</p>
+  <div class="meta">
+    <span>Status <b>Concept, pending measurements</b></span>
+    <span>Date <b>2026-11-08</b></span>
+    <span>Build level <b>Weekend carpentry, circular saw + drill</b></span>
+    <span>Core materials <b>≈ $1,750</b></span>
+  </div>
+</header>
+
+<section class="prose">
+<h2>Reading the house</h2>
+<p>Every finished room in the house runs the same formula: a warm white shell, one heavy black element, one piece of warm organic wood, and a texture that carries the room (brick, leather, a geometric wallpaper). The dining table is the clearest statement of it: live-edge acacia split by a black river, on black steel. The media console repeats it in reverse: black box, round brass pulls. The powder room shows what the house does when it goes dark: near-black walls, fine geometric line, one warm light.</p>
+<p>The bar should be the dining table's sibling, not a new idea. Black slatted body, acacia top, black pipe foot rail, brass only at the pulls and shelf brackets. The back wall behind it goes the powder-room route: deep espresso-black, so bottles and the guitars read like objects in a case.</p>
+<div class="palette">
+  <div class="sw"><i style="background:#F2EDE4"></i><b>Wall white</b>the shell</div>
+  <div class="sw"><i style="background:#1C1B19"></i><b>Console black</b>bar body, cabinet paint</div>
+  <div class="sw"><i style="background:#9C6B3E"></i><b>Acacia</b>bar top, alcove top</div>
+  <div class="sw"><i style="background:#A8663A"></i><b>Cognac</b>sectional, stool seats</div>
+  <div class="sw"><i style="background:#B08D57"></i><b>Aged brass</b>pulls, brackets only</div>
+  <div class="sw"><i style="background:#8E3F2F"></i><b>Brick</b>fireplace, stays as is</div>
+  <div class="sw"><i style="background:#3A2E29"></i><b>Espresso</b>back-bar wall, alcove niche</div>
+</div>
+
+<div class="callout">
+  <span class="eyebrow">The position</span>
+  Build one showpiece bar, in the front music room. Turn the living room alcove into the service station (sink, ice, fridge, glass storage) rather than a second showpiece. Two display bars thirty feet apart is the single most common home-bar mistake, and it doubles the spend on the parts that actually cost money: the top and the hardware.
+</div>
+<p>The counterargument, which is real: the alcove already has cabinetry and probably plumbing, so the cheapest way to "a sick bar" is to upgrade the alcove alone for about a quarter of this budget and skip the freestanding bar entirely. If money is the binding constraint this month, do that first and stop. The reason I still recommend the freestanding bar is the room it goes in. The front music room is the one room in the house that does not match the rest (chrome X-base tables, a patterned grey settee, a mirrored chest). A bar plus a guitar wall gives that room a reason to exist, and selling those three pieces should recover $300 to $500 toward the build. <span class="conf">confidence: moderate</span></p>
+</section>
+
+<section>
+<h2>Where it goes</h2>
+<div class="prose">
+<p>The music room has a long interior wall opposite the big window, with the mirrored chest and guitars on it today. The back bar takes that wall. The bar sits parallel to it, 42 inches out, so one person can work behind it with a fridge door open. Guests sit on the window side, facing the guitars, with the window light behind them. The two lounge chairs stay by the window as the soft seating.</p>
+</div>
+<figure>
+<svg viewBox="0 -10 420 312" role="img" aria-label="Schematic plan of the music room with back bar on the long wall and freestanding bar parallel to it">
+  <defs><pattern id="hatch" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 4L4 0" stroke="var(--muted)" stroke-width=".5"/></pattern></defs>
+  <!-- room 13' x 15' schematic: 156 x 180 in at 1.5 px/in = 234 x 270 -->
+  <rect x="60" y="14" width="234" height="270" class="ln" stroke-width="2.5"/>
+  <!-- window on right wall -->
+  <rect x="292" y="60" width="4" height="150" fill="var(--paper)" stroke="var(--ink)" stroke-width=".6"/>
+  <text x="302" y="140" class="lbl" transform="rotate(90 302 140)">window wall · 10 ft of glass</text>
+  <!-- door on bottom wall -->
+  <path d="M120 284 A30 30 0 0 1 150 254" class="dl"/><line x1="120" y1="284" x2="150" y2="284" stroke="var(--paper)" stroke-width="3"/>
+  <text x="112" y="294" class="lbl">door from hall</text>
+  <!-- back bar on left (long) wall: 72 x 18 in -->
+  <rect x="62" y="68" width="27" height="108" fill="var(--slat)"/>
+  <text x="66" y="124" class="lbl" fill="var(--paper)" style="fill:var(--paper)" transform="rotate(-90 66 124)">back bar 72 × 18</text>
+  <!-- fridge bay -->
+  <rect x="62" y="140" width="27" height="36" fill="url(#hatch)" stroke="var(--paper)" stroke-width=".6"/>
+  <!-- aisle -->
+  <line x1="89" y1="122" x2="152" y2="122" class="dl" marker-start="url(#a)" marker-end="url(#a)"/>
+  <text x="98" y="118" class="dim">42" aisle</text>
+  <!-- bar: 72 long x 25 deep, 1.5px/in -> 108 x 37.5 -->
+  <rect x="152" y="68" width="37.5" height="108" fill="var(--acacia)" stroke="var(--ink)" stroke-width=".8"/>
+  <rect x="152" y="68" width="21" height="108" fill="var(--slat)" opacity=".85"/>
+  <text x="166" y="124" class="lbl" style="fill:var(--paper)" transform="rotate(-90 166 124)">bar 72 × 25</text>
+  <!-- stools -->
+  <g fill="var(--cognac)" stroke="var(--ink)" stroke-width=".5">
+    <circle cx="206" cy="86" r="10"/><circle cx="206" cy="122" r="10"/><circle cx="206" cy="158" r="10"/>
+  </g>
+  <text x="222" y="90" class="lbl">3 stools on 24" centers</text>
+  <!-- lounge chairs near window -->
+  <rect x="248" y="200" width="30" height="30" class="gh"/><rect x="248" y="236" width="30" height="30" class="gh"/>
+  <text x="156" y="222" class="lbl">existing lounge chairs</text>
+  <text x="156" y="230" class="lbl">+ pouf stay by window</text>
+  <!-- guitars on wall -->
+  <g stroke="var(--brass)" stroke-width="1.2"><line x1="60" y1="190" x2="60" y2="200"/><line x1="60" y1="210" x2="60" y2="220"/><line x1="60" y1="230" x2="60" y2="240"/></g>
+  <text x="66" y="236" class="lbl">guitar hangers on the wall, past the shelves</text>
+  <!-- room dims -->
+  <line x1="60" y1="6" x2="294" y2="6" class="dl"/><text x="150" y="4" class="dim m">≈ 13 ft (measure)</text>
+  <line x1="52" y1="14" x2="52" y2="284" class="dl"/><text x="44" y="150" class="dim m" transform="rotate(-90 44 150)">≈ 15 ft (measure)</text>
+  <!-- totals -->
+  <line x1="62" y1="190" x2="216" y2="190" class="dl"/>
+  <text x="90" y="198" class="dim">18 + 42 + 25 + 30 stool = 115" of room depth used</text>
+</svg>
+<figcaption><b>Plan, schematic.</b> Room size is estimated from the video; the layout needs 115" of depth from the long wall to the back of a seated guest, which leaves roughly 40" of circulation in a 13 ft room. If the room is under 12 ft, drop the aisle to 36" or turn the bar 90° so one end meets the wall.</figcaption>
+</figure>
+</section>
+
+<section>
+<h2>The bar</h2>
+<div class="prose">
+<p>Standard bar ergonomics, nothing exotic: a 42" finished height, 25" of top with 11" hanging over the guest side for knees, a foot rail 7" off the floor, 30" stools. The body is a plywood box on a recessed plinth, faced with vertical 1.5" slats on a 0.75" gap. Painted one color, the gaps read as shadow lines and the whole thing goes quiet and expensive-looking. The acacia top is a stock butcher block, the same species as your dining table, oiled dark so the black river reads as family.</p>
+</div>
+<figure>
+<svg viewBox="0 0 400 248" role="img" aria-label="Front elevation of the bar from the guest side, 1 inch equals 4 pixels">
+  <defs>
+    <pattern id="slats" width="9" height="10" patternUnits="userSpaceOnUse"><rect width="9" height="10" fill="#0B0A09"/><rect width="6" height="10" fill="var(--slat)"/></pattern>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--glow)" stop-opacity=".9"/><stop offset="1" stop-color="var(--glow)" stop-opacity="0"/></linearGradient>
+  </defs>
+  <!-- floor -->
+  <line x1="20" y1="200" x2="380" y2="200" class="ln" stroke-width="1"/>
+  <!-- glow under plinth -->
+  <rect x="60" y="196" width="280" height="14" fill="url(#glow)" opacity=".8"/>
+  <!-- plinth recessed 3" -->
+  <rect x="68" y="188" width="264" height="12" fill="#0B0A09"/>
+  <!-- slat body 72 x 37.5 -->
+  <rect x="56" y="38" width="288" height="150" fill="url(#slats)"/>
+  <!-- top 74 x 1.5 -->
+  <rect x="52" y="32" width="296" height="6" fill="var(--acacia)" stroke="var(--ink)" stroke-width=".5"/>
+  <path d="M52 35 h296" stroke="#4A2E18" stroke-width=".8" opacity=".6"/>
+  <!-- foot rail 7" up -->
+  <g><rect x="86" y="172" width="4" height="3" fill="var(--ink)"/><rect x="310" y="172" width="4" height="3" fill="var(--ink)"/></g>
+  <rect x="62" y="169.5" width="276" height="5" rx="2.5" fill="#111" stroke="var(--muted)" stroke-width=".4"/>
+  <!-- ghost stools -->
+  <g class="gh">
+    <rect x="80" y="80" width="56" height="4"/><line x1="92" y1="84" x2="88" y2="200"/><line x1="124" y1="84" x2="128" y2="200"/>
+    <rect x="176" y="80" width="56" height="4"/><line x1="188" y1="84" x2="184" y2="200"/><line x1="220" y1="84" x2="224" y2="200"/>
+    <rect x="272" y="80" width="56" height="4"/><line x1="284" y1="84" x2="280" y2="200"/><line x1="316" y1="84" x2="320" y2="200"/>
+  </g>
+  <!-- dimensions -->
+  <line x1="52" y1="22" x2="348" y2="22" class="dl"/><line x1="52" y1="18" x2="52" y2="26" class="dl"/><line x1="348" y1="18" x2="348" y2="26" class="dl"/>
+  <text x="182" y="19" class="dim">74" top</text>
+  <line x1="56" y1="222" x2="344" y2="222" class="dl"/><line x1="56" y1="218" x2="56" y2="226" class="dl"/><line x1="344" y1="218" x2="344" y2="226" class="dl"/>
+  <text x="184" y="233" class="dim">72" body · 32 slats @ 2.25" pitch</text>
+  <line x1="366" y1="32" x2="366" y2="200" class="dl"/><line x1="362" y1="32" x2="370" y2="32" class="dl"/><line x1="362" y1="200" x2="370" y2="200" class="dl"/>
+  <text x="372" y="118" class="dim" transform="rotate(90 372 118)">42" finished height</text>
+  <line x1="46" y1="172" x2="46" y2="200" class="dl"/><text x="38" y="188" class="dim" transform="rotate(-90 38 188)">7"</text>
+  <text x="28" y="176" class="lbl">rail</text>
+  <text x="4" y="197" class="dim">3" plinth</text>
+  <text x="236" y="76" class="dim m">30" seat height, 24" centers</text>
+  <text x="120" y="212" class="lbl">2700K LED strip under plinth, dimmed: the body floats</text>
+</svg>
+<figcaption><b>Front elevation, guest side.</b> Scale 1" = 4 px. Slats are 1.5" wide with a 0.75" gap, so the 72" body takes exactly 32 slats. Foot rail is 1" black pipe on two floor flanges turned sideways onto the plinth face.</figcaption>
+</figure>
+
+<figure>
+<svg viewBox="0 0 300 248" role="img" aria-label="Section through the bar showing overhang, body depth, foot rail, shelves and a stool">
+  <defs><pattern id="slats2" width="9" height="10" patternUnits="userSpaceOnUse"><rect width="9" height="10" fill="#0B0A09"/><rect width="6" height="10" fill="var(--slat)"/></pattern></defs>
+  <line x1="10" y1="200" x2="290" y2="200" class="ln" stroke-width="1"/>
+  <!-- guest side is left. body face x=130, back x=186 (14"). top from 86 to 186 (25") -->
+  <rect x="140" y="188" width="32" height="12" fill="#0B0A09"/>
+  <!-- body (ply) -->
+  <rect x="133" y="38" width="53" height="150" fill="var(--panel)" stroke="var(--ink)" stroke-width=".6"/>
+  <!-- slat skin proud 0.75" -->
+  <rect x="130" y="38" width="3" height="150" fill="var(--slat)"/>
+  <!-- shelves at 12 and 24 -->
+  <rect x="136" y="150" width="50" height="3" fill="var(--slat)"/><rect x="136" y="102" width="50" height="3" fill="var(--slat)"/>
+  <text x="140" y="146" class="lbl">bottles, 13"</text><text x="140" y="98" class="lbl">glasses</text>
+  <text x="140" y="184" class="lbl">bins, bulk</text>
+  <!-- top -->
+  <rect x="86" y="32" width="100" height="6" fill="var(--acacia)" stroke="var(--ink)" stroke-width=".5"/>
+  <!-- foot rail: center 7" up (y=172), 7" out (x=102) -->
+  <circle cx="102" cy="172" r="2.6" fill="#111" stroke="var(--muted)" stroke-width=".4"/>
+  <path d="M130 176 L108 173" class="ln"/><rect x="128" y="168" width="2" height="12" fill="var(--ink)"/>
+  <!-- stool: seat 30" = y80, 15" wide -->
+  <g class="gh"><rect x="36" y="78" width="60" height="4"/><line x1="46" y1="82" x2="42" y2="200"/><line x1="86" y1="82" x2="90" y2="200"/><line x1="44" y1="150" x2="88" y2="150"/></g>
+  <!-- person knees ghost -->
+  <path d="M66 82 q0 40 40 44" class="gh"/>
+  <!-- dims -->
+  <line x1="86" y1="22" x2="186" y2="22" class="dl"/><line x1="86" y1="18" x2="86" y2="26" class="dl"/><line x1="186" y1="18" x2="186" y2="26" class="dl"/><text x="118" y="19" class="dim">25" top</text>
+  <line x1="86" y1="222" x2="130" y2="222" class="dl"/><line x1="86" y1="218" x2="86" y2="226" class="dl"/><line x1="130" y1="218" x2="130" y2="226" class="dl"/><text x="90" y="233" class="dim">11" knee</text>
+  <line x1="130" y1="222" x2="186" y2="222" class="dl"/><line x1="186" y1="218" x2="186" y2="226" class="dl"/><text x="140" y="233" class="dim">14" body</text>
+  <line x1="212" y1="32" x2="212" y2="200" class="dl"/><line x1="208" y1="32" x2="216" y2="32" class="dl"/><line x1="208" y1="200" x2="216" y2="200" class="dl"/><text x="218" y="118" class="dim" transform="rotate(90 218 118)">42"</text>
+  <line x1="230" y1="38" x2="230" y2="188" class="dl"/><text x="236" y="116" class="dim m" transform="rotate(90 236 116)">37.5" slat field</text>
+  <line x1="20" y1="80" x2="20" y2="200" class="dl"/><text x="12" y="150" class="dim" transform="rotate(-90 12 150)">30" seat</text>
+  <line x1="102" y1="178" x2="102" y2="200" class="dl"/><text x="104" y="196" class="dim m">7"</text>
+  <line x1="102" y1="178" x2="130" y2="178" class="dl"/>
+  <text x="196" y="60" class="lbl">open to the bartender</text>
+  <text x="196" y="68" class="lbl">no back panel</text>
+</svg>
+<figcaption><b>Section.</b> Scale 1" = 4 px. The 14" body is shallow on purpose; a bar body deeper than 16" wastes floor and makes the bartender reach. Shelves at 12" and 24" give a 13" bottle bay and a glass bay. Plinth is recessed 3" on all four sides.</figcaption>
+</figure>
+
+<div class="grid2">
+  <div class="card"><h4>Body</h4><p>Two sheets of 3/4" plywood, pocket-screwed and glued. Front panel is one piece (72 × 37.5") so the slat field has no seams. Ends 13.25" deep so they tuck behind the front. One center divider, two shelves. Painted inside and out in the console black.</p></div>
+  <div class="card"><h4>Slat face</h4><p>1.5" × 0.75" strips on a 0.75" gap, glued and 18-ga pinned to the painted front and ends. Cheapest route: rip 1.5" strips from one sheet of 3/4" MDF (64 slats from one sheet, you need 44). Prime the cut edges twice. No table saw: buy 1 × 2 poplar instead, 22 eight-foot sticks.</p></div>
+  <div class="card"><h4>Top</h4><p>Stock acacia butcher block, 74 × 25 × 1.5". Sand to 180, one coat of a dark walnut oil stain to pull it toward the dining table, then a hardwax oil or Waterlox for spill resistance. Fix from below with figure-8 fasteners so it can move.</p></div>
+  <div class="card"><h4>Rail, light, hardware</h4><p>1" black iron pipe foot rail, 72" plus two 90° elbows and flanges, degreased and clear-coated. One 2700K COB LED strip under the plinth on a dimmer. Brass only on the back bar: round brass pulls that match the media console.</p></div>
+</div>
+</section>
+
+<section>
+<h2>The back bar and the guitar wall</h2>
+<div class="prose">
+<p>Paint the long wall behind the bar in the powder-room register: a deep espresso-black, matte. Against it, a 72" low cabinet at 36" with a beverage fridge in the right bay, two 48" floating shelves on the left two-thirds, and the guitars hung vertically on the right third where there is 44" of clear wall above the counter. The guitars stop being clutter on stands and become the art, lit by the shelf strips. This is the move that makes the room yours instead of a catalog bar.</p>
+</div>
+<figure>
+<svg viewBox="0 0 400 300" role="img" aria-label="Elevation of the back bar wall with low cabinet, floating shelves, bottles and two hung guitars">
+  <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--glow)" stop-opacity=".55"/><stop offset="1" stop-color="var(--glow)" stop-opacity="0"/></linearGradient></defs>
+  <!-- wall: 96 wide x 90 tall at 3px/in -> 288 x 270 ; x from 56 to 344, floor y=280 -->
+  <rect x="56" y="10" width="288" height="270" fill="#2A211D"/>
+  <line x1="20" y1="280" x2="380" y2="280" class="ln" stroke-width="1"/>
+  <!-- cabinet 72 x 36 at x 56..272 -->
+  <rect x="62" y="268" width="204" height="12" fill="#0B0A09"/>
+  <rect x="56" y="172" width="216" height="96" fill="var(--slat)"/>
+  <!-- doors lines -->
+  <g stroke="#0B0A09" stroke-width="1"><line x1="128" y1="172" x2="128" y2="268"/><line x1="200" y1="172" x2="200" y2="268"/></g>
+  <!-- brass pulls -->
+  <g fill="var(--brass)"><circle cx="121" cy="220" r="2.2"/><circle cx="135" cy="220" r="2.2"/><circle cx="193" cy="220" r="2.2"/></g>
+  <!-- fridge bay 24" -->
+  <rect x="202" y="174" width="68" height="92" fill="#171513" stroke="#3A3530" stroke-width=".8"/>
+  <rect x="208" y="180" width="56" height="80" fill="#1E1B19" stroke="#4A4540" stroke-width=".5"/>
+  <text x="216" y="230" class="lbl" style="fill:var(--glow)">24" fridge</text>
+  <!-- top -->
+  <rect x="54" y="167.5" width="220" height="4.5" fill="var(--acacia)" stroke="var(--ink)" stroke-width=".4"/>
+  <!-- shelves at 52 and 66 in (y 124, 82), 48 long x from 62 to 206 -->
+  <rect x="62" y="122" width="144" height="4.5" fill="var(--acacia)"/>
+  <rect x="62" y="80" width="144" height="4.5" fill="var(--acacia)"/>
+  <rect x="62" y="126.5" width="144" height="22" fill="url(#g2)"/>
+  <rect x="62" y="84.5" width="144" height="22" fill="url(#g2)"/>
+  <rect x="62" y="172" width="144" height="0" fill="none"/>
+  <!-- bottles on shelves -->
+  <g fill="#6B4A2A" stroke="#C9A36A" stroke-width=".3">
+    <rect x="70" y="98" width="7" height="24"/><rect x="80" y="94" width="6" height="28"/><rect x="90" y="100" width="7" height="22"/><rect x="104" y="96" width="6" height="26"/><rect x="114" y="102" width="8" height="20"/><rect x="132" y="97" width="6" height="25"/><rect x="142" y="100" width="7" height="22"/><rect x="156" y="94" width="6" height="28"/><rect x="170" y="99" width="7" height="23"/><rect x="186" y="96" width="6" height="26"/>
+  </g>
+  <g fill="none" stroke="#D9D1C4" stroke-width=".5" opacity=".9">
+    <path d="M72 140 h8 v22 h-8z"/><path d="M84 140 h8 v22 h-8z"/><path d="M96 140 h8 v22 h-8z"/><path d="M116 146 q6 -8 12 0 v16 h-12z"/><path d="M132 146 q6 -8 12 0 v16 h-12z"/><path d="M152 140 h7 v22 h-7z"/><path d="M164 140 h7 v22 h-7z"/><path d="M180 144 h10 v18 h-10z"/>
+  </g>
+  <!-- guitars: 39" long = 117px, hung so bottoms at y 160 -> top y 43 ; x centers 300 and 330 -->
+  <g fill="var(--cognac)" stroke="#0B0A09" stroke-width=".6">
+    <path d="M296 43 h7 v62 q14 2 14 16 q0 10 -8 14 q6 6 2 16 q-4 10 -11 10 q-7 0 -11 -10 q-4 -10 2 -16 q-8 -4 -8 -14 q0 -14 13 -16z"/>
+    <path d="M327 46 h6 v60 q13 2 13 15 q0 9 -7 13 q5 5 2 15 q-4 9 -11 9 q-7 0 -11 -9 q-3 -10 2 -15 q-7 -4 -7 -13 q0 -13 13 -15z"/>
+  </g>
+  <g stroke="var(--brass)" stroke-width="1.4"><line x1="299.5" y1="43" x2="299.5" y2="36"/><line x1="330" y1="46" x2="330" y2="39"/></g>
+  <text x="258" y="30" class="lbl" style="fill:var(--paper)">wall hangers, 44" clear</text>
+  <!-- dims -->
+  <line x1="56" y1="292" x2="272" y2="292" class="dl"/><text x="140" y="299" class="dim">72" cabinet · 36" counter</text>
+  <line x1="24" y1="80" x2="24" y2="280" class="dl"/><text x="18" y="190" class="dim" transform="rotate(-90 18 190)">66" top shelf</text>
+  <line x1="40" y1="122" x2="40" y2="280" class="dl"/><text x="34" y="210" class="dim m" transform="rotate(-90 34 210)">52" low shelf</text>
+  <line x1="62" y1="70" x2="206" y2="70" class="dl"/><text x="112" y="67" class="dim" style="fill:var(--paper)">48" shelves, 10" deep</text>
+  <text x="60" y="22" class="lbl" style="fill:var(--paper)">wall painted deep espresso-black, matte · 2700K strip under each shelf</text>
+</svg>
+<figcaption><b>Back bar elevation.</b> Scale 1" = 3 px. Low cabinet is either two IKEA BESTÅ frames on a 2×4 plinth with an acacia offcut top, or a second slat box built the same way as the bar. Shelves are 2 × 10 stained to match the top, on hidden steel brackets rated 150 lb per shelf.</figcaption>
+</figure>
+</section>
+
+<section>
+<h2>The wet bar alcove</h2>
+<div class="prose">
+<p>From the walkthrough video, the alcove is the recessed niche you pass between the living room and the dining room: a white base cabinet with drawers below, a darker upper shelf or cabinet above. I could not see a sink or faucet in the footage, so the drawings below assume there is a water line and a drain in the base cabinet. If there is not, nothing changes except the faucet line in the budget. <span class="conf">confidence: low on the existing layout</span></p>
+<p>The redesign keeps every expensive thing in place: the carcass, the plumbing, the electrical. It changes the five things that are visible. The result should look like the bar in the music room walked down the hall and parked itself in the wall.</p>
+</div>
+<div class="grid2">
+<figure style="margin-top:16px">
+<svg viewBox="0 0 220 290" role="img" aria-label="Alcove as it is today: white base cabinet with drawers, dark upper cabinet">
+  <rect x="38" y="10" width="144" height="252" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+  <!-- base cab white 36" -->
+  <rect x="40" y="154" width="140" height="106" fill="#F4F2EE" stroke="#B8B2A8" stroke-width=".6"/>
+  <g stroke="#B8B2A8" stroke-width=".6" fill="none"><rect x="46" y="160" width="60" height="22"/><rect x="46" y="188" width="60" height="22"/><rect x="46" y="216" width="60" height="38"/><rect x="112" y="160" width="62" height="94"/></g>
+  <g fill="#9A948A"><rect x="72" y="170" width="8" height="2"/><rect x="72" y="198" width="8" height="2"/><rect x="72" y="234" width="8" height="2"/><rect x="118" y="206" width="2" height="8"/></g>
+  <rect x="38" y="150" width="144" height="4" fill="#CFC8BC"/>
+  <!-- upper dark cab 54 to 84 -->
+  <rect x="40" y="12" width="140" height="90" fill="#3B342E"/>
+  <line x1="110" y1="12" x2="110" y2="102" stroke="#1C1B19" stroke-width=".8"/>
+  <text x="44" y="118" class="lbl">blank wall, no light</text>
+  <text x="44" y="126" class="lbl">sink here? (unknown)</text>
+  <line x1="10" y1="262" x2="210" y2="262" class="ln" stroke-width="1"/>
+  <line x1="38" y1="276" x2="182" y2="276" class="dl"/><text x="68" y="285" class="dim m">≈ 48" opening (measure)</text>
+  <text x="44" y="24" class="dim" style="fill:#EDE6DA">today</text>
+</svg>
+<figcaption><b>As read from the video.</b> White drawer base, dark upper, nothing lit. Dimensions are guesses.</figcaption>
+</figure>
+<figure style="margin-top:16px">
+<svg viewBox="0 0 220 290" role="img" aria-label="Alcove redesigned: black base cabinet with brass knobs, acacia top, espresso niche with two floating shelves and under-shelf light">
+  <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--glow)" stop-opacity=".55"/><stop offset="1" stop-color="var(--glow)" stop-opacity="0"/></linearGradient></defs>
+  <rect x="38" y="10" width="144" height="252" fill="#2A211D" stroke="var(--ink)" stroke-width="1.2"/>
+  <!-- base cab black -->
+  <rect x="40" y="154" width="140" height="106" fill="var(--slat)"/>
+  <g stroke="#0B0A09" stroke-width=".8" fill="none"><rect x="46" y="160" width="60" height="22"/><rect x="46" y="188" width="60" height="22"/><rect x="46" y="216" width="60" height="38"/><rect x="112" y="160" width="62" height="94"/></g>
+  <g fill="var(--brass)"><circle cx="76" cy="171" r="2.2"/><circle cx="76" cy="199" r="2.2"/><circle cx="76" cy="235" r="2.2"/><circle cx="118" cy="210" r="2.2"/></g>
+  <!-- acacia top -->
+  <rect x="38" y="149" width="144" height="5" fill="var(--acacia)" stroke="var(--ink)" stroke-width=".4"/>
+  <!-- faucet + sink outline -->
+  <path d="M140 149 v-14 q0 -6 6 -6 h4" stroke="var(--brass)" stroke-width="1.6" fill="none"/>
+  <ellipse cx="146" cy="151" rx="18" ry="2" fill="#0B0A09" opacity=".6"/>
+  <!-- shelves at 54 and 68 -> above counter 36: y = 149 - 18*3=95? use 3px/in: 18" above = 54px -> y 95 ; 32" above -> y 53 -->
+  <rect x="46" y="95" width="128" height="4.5" fill="var(--acacia)"/>
+  <rect x="46" y="55" width="128" height="4.5" fill="var(--acacia)"/>
+  <rect x="46" y="99.5" width="128" height="22" fill="url(#g3)"/>
+  <rect x="46" y="59.5" width="128" height="22" fill="url(#g3)"/>
+  <g fill="#6B4A2A" stroke="#C9A36A" stroke-width=".3">
+    <rect x="54" y="72" width="6" height="23"/><rect x="64" y="69" width="6" height="26"/><rect x="74" y="74" width="7" height="21"/><rect x="90" y="70" width="6" height="25"/><rect x="100" y="75" width="7" height="20"/><rect x="118" y="71" width="6" height="24"/><rect x="128" y="74" width="7" height="21"/><rect x="146" y="69" width="6" height="26"/><rect x="156" y="73" width="7" height="22"/>
+  </g>
+  <g fill="none" stroke="#D9D1C4" stroke-width=".5" opacity=".9">
+    <path d="M56 114 h8 v20 h-8z"/><path d="M68 114 h8 v20 h-8z"/><path d="M84 118 q5 -7 10 0 v16 h-10z"/><path d="M98 118 q5 -7 10 0 v16 h-10z"/><path d="M116 114 h7 v20 h-7z"/><path d="M128 114 h7 v20 h-7z"/><path d="M146 116 h10 v18 h-10z"/>
+  </g>
+  <line x1="10" y1="262" x2="210" y2="262" class="ln" stroke-width="1"/>
+  <text x="44" y="24" class="dim" style="fill:#EDE6DA">after</text>
+  <text x="44" y="34" class="lbl" style="fill:#D9D1C4">niche painted espresso, shelves lit</text>
+  <line x1="190" y1="55" x2="190" y2="149" class="dl"/><text x="196" y="106" class="dim m" transform="rotate(90 196 106)">32" / 18" shelves</text>
+</svg>
+<figcaption><b>After.</b> Same box, same plumbing. Black enamel, brass knobs, acacia top, espresso niche, two lit shelves, a brass bar faucet if there is a sink.</figcaption>
+</figure>
+</div>
+<div class="prose">
+<h3>Scope, in order</h3>
+<ol>
+  <li><b>Paint the base cabinet</b> in the same black cabinet enamel as the bar body. Degloss, bond primer, two coats. Doors and drawer fronts off and flat.</li>
+  <li><b>Swap the pulls</b> for round brass knobs that match the media console, so the two black pieces in the living room speak the same language.</li>
+  <li><b>New top</b> cut from a second 4 ft acacia block (the rest of that block becomes the back-bar shelves in the music room). Same stain and finish as the bar top. If there is a sink, template it before you cut.</li>
+  <li><b>Paint the niche interior</b> walls and ceiling deep espresso-black, matte. Dark niche, lit shelves is the oldest trick in bar design and it costs a quart of paint.</li>
+  <li><b>Replace the upper cabinet</b> with two floating shelves at 18" and 32" above the counter. If removing it exposes damage, keep the box, take the doors off, paint the interior black and shelve it.</li>
+  <li><b>Light it</b> with a 2700K LED strip under each shelf on a plug-in dimmer, switched from the existing outlet.</li>
+  <li><b>Faucet</b> in brushed brass or matte black, single-hole bar style, only if a sink exists.</li>
+  <li><b>Optional</b>: a round brass-framed mirror at the back of the niche doubles the bottle glow. Skip if the niche is under 20" deep.</li>
+</ol>
+</div>
+</section>
+
+<section>
+<h2>Cut list and hardware</h2>
+<div class="prose"><p>Sized for a 72" bar. Every number here moves if your measurements say the bar should be 66" or 78", so treat this as the pattern, not the order. Plywood is 3/4" sanded (birch or maple face). Two sheets cover the body with a 10.5" × 96" strip left over for the divider and nailers.</p></div>
+<div class="tbl"><table>
+<thead><tr><th>Part</th><th class="n">Qty</th><th>Size (in)</th><th>Stock</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Front panel (slat substrate)</td><td class="n">1</td><td>72 × 37.5</td><td>3/4 ply, sheet 1</td><td>One piece, no seam behind the slats</td></tr>
+<tr><td>End panels</td><td class="n">2</td><td>13.25 × 37.5</td><td>3/4 ply, sheet 2</td><td>Butt behind the front; front overlaps ends</td></tr>
+<tr><td>Bottom</td><td class="n">1</td><td>70.5 × 13.25</td><td>3/4 ply, sheet 2</td><td>Sits on the plinth</td></tr>
+<tr><td>Shelf</td><td class="n">1</td><td>70.5 × 12</td><td>3/4 ply, sheet 2</td><td>At 24"; a second shelf at 12" if you want more bottle storage</td></tr>
+<tr><td>Center divider</td><td class="n">1</td><td>34 × 10.5</td><td>3/4 ply, sheet 1 offcut</td><td>Set back 2" from the front</td></tr>
+<tr><td>Sub-top stretchers</td><td class="n">2</td><td>72 × 4</td><td>3/4 ply, sheet 1 offcut</td><td>Front and back under the top; figure-8 fasteners into these</td></tr>
+<tr><td>Plinth frame</td><td class="n">1</td><td>66 × 8 outside</td><td>2 × 4, four 8-ft sticks</td><td>Recessed 3" all round; LED strip on its outside face</td></tr>
+<tr><td>Slats</td><td class="n">44</td><td>1.5 × 0.75 × 37.5</td><td>3/4 MDF ripped, or 1 × 2 poplar</td><td>32 front + 6 per end. Pitch 2.25". Start and end each face with a full slat</td></tr>
+<tr><td>Top</td><td class="n">1</td><td>74 × 25 × 1.5</td><td>Acacia butcher block</td><td>1" overhang each end, 11" at the front</td></tr>
+<tr><td>Foot rail</td><td class="n">1</td><td>72 pipe + 2 elbows + 2 flanges</td><td>1" black iron pipe</td><td>Elbows turn into flanges screwed to the plinth face at 7" centerline</td></tr>
+<tr><td>Back-bar shelves</td><td class="n">2</td><td>48 × 9.25 × 1.5</td><td>2 × 10 stained, or acacia offcut</td><td>Hidden brackets, 2 per shelf, into studs</td></tr>
+<tr><td>Alcove top</td><td class="n">1</td><td>≈ 48 × 25 × 1.5</td><td>Acacia block, 4 ft</td><td>Template around sink if present</td></tr>
+</tbody></table></div>
+<div class="grid2">
+  <div class="card"><h4>Fasteners and glue</h4><p>Pocket screws 1-1/4" coarse (100), wood glue, 18-ga brad nails 1-1/4" for slats, construction adhesive for the plinth, 8 figure-8 top fasteners, 3" structural screws for the plinth to the body.</p></div>
+  <div class="card"><h4>Finish</h4><p>Bond primer and black cabinet enamel in satin (one gallon covers bar, alcove cabinet and the low back-bar cabinet). Dark walnut oil stain, then hardwax oil or Waterlox on all acacia. Matte espresso-black wall paint, one gallon for the music room wall, one quart for the niche.</p></div>
+  <div class="card"><h4>Tools you need</h4><p>Circular saw with a straight-edge guide (or a track saw), drill driver, pocket-hole jig, brad nailer (borrow or a $30 manual stapler-nailer works for MDF slats), random orbit sander, 4 ft level, stud finder, clamps.</p></div>
+  <div class="card"><h4>Tools that help</h4><p>A table saw turns the slat job from an afternoon into forty minutes. If you do not own one, buy the poplar 1 × 2s and skip the ripping entirely. A pipe clamp pair and a square make the carcass come out true.</p></div>
+</div>
+</section>
+
+<section>
+<h2>Build sequence</h2>
+<div class="prose"><p>Three weekends if you have the tools and a garage. Paint before assembly wherever possible; painting slats after they are on is the step that ruins the finish.</p></div>
+<ol class="steps">
+  <li><div><b>Measure and mark the room</b>Tape the bar and back bar footprints on the floor with painter's tape. Sit a dining chair where the stools go. Walk the aisle with a fridge door open (24"). Adjust the bar length and the aisle now, before any wood is cut.</div></li>
+  <li><div><b>Break down sheets and rip slats</b>Cut both plywood sheets to the list. Rip the MDF into 1.5" strips, cut to 37.5". Prime every MDF edge twice; MDF drinks primer. Lay the slats out on sawhorses and spray or roll them black first.</div></li>
+  <li><div><b>Build the carcass</b>Pocket-screw ends and divider to the bottom, add stretchers, square it with a tape across the diagonals, then screw on the front panel. Build the 2 × 4 plinth as a separate frame and attach from inside the bottom with 3" screws so the LED strip wire has a path.</div></li>
+  <li><div><b>Paint the box</b>Prime and two coats of enamel inside and out. The front panel face must be fully black before slats go on because the gaps show it.</div></li>
+  <li><div><b>Hang the slats</b>Make a 0.75" spacer block. Start each face with a full slat flush at the corner, glue and pin every slat, spacer between. The ends get 6 slats each so the corners read as a solid wrap. Touch up pin holes with black filler.</div></li>
+  <li><div><b>Finish and fit the top</b>Sand the acacia to 180, stain, two coats of hardwax oil with a day between. Set it on the stretchers with figure-8 fasteners, 11" overhang to the guest side, 1" each end.</div></li>
+  <li><div><b>Rail and light</b>Degrease the black pipe with acetone, clear-coat it matte, assemble, and screw the flanges to the plinth face at a 7" centerline. Stick the LED strip to the plinth's outside face pointing down, run the driver inside the body to a cord on the bartender side.</div></li>
+  <li><div><b>Back bar</b>Paint the wall. Find studs, hang the two shelves level, mount the guitar hangers on the right third at a height that puts the guitar bottoms 6" above the counter. Assemble the low cabinet, slide the fridge in, run its cord to the wall outlet.</div></li>
+  <li><div><b>Alcove</b>Same enamel, same knobs, same stain, same strips. Do it last, with the leftovers, so every finish matches because it is literally the same can.</div></li>
+</ol>
+</section>
+
+<section>
+<h2>Budget</h2>
+<div class="prose"><p>Big-box retail at full price, no coupons, no Marketplace luck. Prices are from memory of recent ranges and should be checked at checkout; lumber and butcher block move the most. <span class="conf">confidence: moderate, ±15%</span></p></div>
+<div class="tbl"><table>
+<thead><tr><th>Line</th><th>What</th><th class="n">Low</th><th class="n">High</th></tr></thead>
+<tbody>
+<tr><td>Bar body</td><td>2 sheets 3/4" sanded ply, 1 sheet 3/4" MDF, four 2 × 4s</td><td class="n">$185</td><td class="n">$230</td></tr>
+<tr><td>Bar top</td><td>Acacia butcher block 74 × 25 × 1.5</td><td class="n">$230</td><td class="n">$320</td></tr>
+<tr><td>Foot rail</td><td>1" black pipe, elbows, flanges, clear coat</td><td class="n">$60</td><td class="n">$90</td></tr>
+<tr><td>Paint</td><td>Bond primer + 1 gal cabinet enamel, 1 gal + 1 qt wall paint</td><td class="n">$150</td><td class="n">$200</td></tr>
+<tr><td>Wood finish</td><td>Stain + hardwax oil or Waterlox for all acacia</td><td class="n">$55</td><td class="n">$90</td></tr>
+<tr><td>Lighting</td><td>Two 2700K COB strips, drivers, dimmers</td><td class="n">$60</td><td class="n">$110</td></tr>
+<tr><td>Fasteners</td><td>Pocket screws, brads, glue, figure-8s, filler</td><td class="n">$45</td><td class="n">$70</td></tr>
+<tr><td>Back-bar cabinet</td><td>2 IKEA BESTÅ frames + doors, or a second slat box</td><td class="n">$180</td><td class="n">$280</td></tr>
+<tr><td>Shelves and brackets</td><td>Two 2 × 10s or acacia offcut, 4 hidden brackets, guitar hangers</td><td class="n">$90</td><td class="n">$150</td></tr>
+<tr><td>Second acacia block</td><td>4 ft × 25, for alcove top and shelves</td><td class="n">$130</td><td class="n">$190</td></tr>
+<tr><td>Alcove hardware</td><td>Brass knobs, brackets, LED, one quart paint</td><td class="n">$90</td><td class="n">$150</td></tr>
+<tr class="total"><td>Core build</td><td>Everything above</td><td class="n">$1,275</td><td class="n">$1,880</td></tr>
+<tr><td>Stools</td><td>3 × black steel with tan leather seat; Marketplace first</td><td class="n">$240</td><td class="n">$480</td></tr>
+<tr><td>Beverage fridge</td><td>24" undercounter, used</td><td class="n">$150</td><td class="n">$350</td></tr>
+<tr><td>Bar faucet</td><td>Only if the alcove has a sink</td><td class="n">$90</td><td class="n">$160</td></tr>
+<tr><td>Pocket-hole jig</td><td>Only if you do not own one</td><td class="n">$45</td><td class="n">$140</td></tr>
+<tr class="total"><td>All in</td><td>Core + the options</td><td class="n">$1,800</td><td class="n">$3,010</td></tr>
+<tr><td>Offset</td><td>Sell the chrome X tables, mirrored chest, grey settee</td><td class="n">−$300</td><td class="n">−$500</td></tr>
+</tbody></table></div>
+<div class="prose">
+<p>For comparison, a 6 ft slat-front bar with a hardwood top from a furniture retailer runs $1,800 to $3,500 for the bar alone with no back bar, no lighting, and a laminate or veneer top. The DIY version here puts the money into the two things you touch: the top and the rail.</p>
+<h3>Where to cut if you must</h3>
+<ul>
+  <li><b>Skip the back-bar cabinet</b> and use shelves only. Saves $180 to $280. The fridge then goes inside the bar body, which has room.</li>
+  <li><b>Rip the slats from MDF</b> instead of buying poplar. Saves about $100. Already assumed in the table.</li>
+  <li><b>Use a 2 × 12 glue-up</b> for the top instead of acacia, stained to match. Saves $150, looks 80% as good, and your dining table will make the difference obvious.</li>
+  <li><b>Do the alcove alone first.</b> Roughly $350 to $500 with the second acacia block, and it is a one-weekend job.</li>
+</ul>
+</div>
+</section>
+
+<section class="ask">
+<span class="eyebrow">What I need to lock the drawings</span>
+<h2>Five measurements and two photos</h2>
+<ul>
+  <li>Music room: wall-to-wall width and length, window width, door position. A tape across the floor is enough.</li>
+  <li>Alcove: opening width, height, depth of the niche, and the base cabinet height. Straight-on daylight photo with the lights on.</li>
+  <li>Is there a sink and faucet in the alcove today? A water line? An outlet inside the niche?</li>
+  <li>How many people do you actually want seated at the bar: 2 or 3? It changes the length between 60" and 72".</li>
+  <li>Do you own or can you borrow a table saw and a brad nailer? It decides slats from MDF versus poplar.</li>
+  <li>Confirm the music room is the spot. If the bar belongs somewhere else, send a video of that wall.</li>
+</ul>
+</section>
+
+</div>
